@@ -26,9 +26,6 @@ docker run -it -p 8000:8000 --name <container-name> <image-name>
 docker exec -it <container-name> bash
 ```
 
-<br>
-<br>
-
 # Kubernetes Commands :
 
 ### To create kubernetes deployment
@@ -74,9 +71,6 @@ minikube service flask-app-service --url
 ```
 kubectl port-forward service/flask-app-service 8080:80
 ```
-
-<br>
-<br>
 
 # Ansible Commands :
 
