@@ -1,0 +1,24 @@
+- name: Decrypt vault file
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars_prompt:
+    - name: vault_password
+      prompt: "Enter Vault Password"
+      private: yes
+
+  tasks:
+    - name: Save password to a temp file
+      copy:
+        content: "{{ vault_password }}"
+        dest: /tmp/.vault_pass.txt
+        mode: "0600"
+
+    - name: Decrypt the secrets.yml file
+      command: ansible-vault decrypt secrets.yml --vault-password-file /tmp/.vault_pass.txt
+
+    - name: Remove temp password file
+      file:
+        path: /tmp/.vault_pass.txt
+        state: absent

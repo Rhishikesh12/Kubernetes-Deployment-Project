@@ -1,0 +1,41 @@
+- name: Deploy flask app on Kubernetes
+  hosts: localhost
+  gather_facts: false
+
+  vars_files:
+    - secrets.yml
+
+  vars_prompt:
+    - name: username
+      prompt: "Enter username"
+      private: no
+    - name: password
+      prompt: "Enter password"
+      private: yes
+
+  tasks:
+    - name: Verify Credentials
+      assert:
+        that:
+          - username == secret_username
+          - password == secret_password
+        fail_msg: "Invalid Credentials! Deployment Aborted"
+
+    - name: Create namespace if it doesn't exist
+      k8s:
+        name: "default"
+        api_version: v1
+        kind: Namespace
+        state: present
+
+    - name: Create Kubernetes Deployment
+      k8s:
+        state: present
+        src: deployment.yml
+        namespace: "default"
+
+    - name: Create Kubernetes Service
+      k8s:
+        state: present
+        src: service.yml
+        namespace: "default"
