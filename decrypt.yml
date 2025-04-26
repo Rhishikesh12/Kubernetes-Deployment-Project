@@ -22,3 +22,14 @@
       file:
         path: /tmp/.vault_pass.txt
         state: absent
+
+# another simpler code
+---
+- name: Decrypt Vault File
+  hosts: localhost
+  connection: local
+
+  tasks:
+    - name: Decrypt the Vault File
+      shell: ansible-vault decrypt secrets.yml --vault-password-file=vault_pass.txt
+      no_log: true
